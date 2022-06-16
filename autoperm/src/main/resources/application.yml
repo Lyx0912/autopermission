@@ -4,11 +4,11 @@ spring:
   datasource:
     #MySQL配置
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://42.192.229.95:3306/AUTOPERM?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://127.0.0.1:3306/AUTOPERM?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     password: Liyongxuan666
     username: root
   redis:
-    host: 42.192.229.95
+    host: 127.0.0.1
     port: 6379
     timeout: 5000
 
