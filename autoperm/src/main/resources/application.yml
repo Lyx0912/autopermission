@@ -1,0 +1,18 @@
+server:
+  port: 8999
+spring:
+  datasource:
+    #MySQL配置
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://42.192.229.95:3306/AUTOPERM?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    password: Liyongxuan666
+    username: root
+  redis:
+    host: 42.192.229.95
+    port: 6379
+    timeout: 5000
+
+mybatis-plus:
+  mapper-locations: classpath*:mybatis/**/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true

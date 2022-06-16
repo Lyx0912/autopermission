@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyx.autoperm.mapper.RoleMapper">
+
+    <select id="queryRolesByUserId" resultType="string">
+        select r.role_name from L_USER_ROLE ur,L_ROLE r where ur.role_id = r.id and ur.user_id = #{id}
+    </select>
+</mapper>

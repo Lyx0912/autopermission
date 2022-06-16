@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyx.autoperm.mapper.PermissionMapper">
+
+    <select id="queryPermissions" resultType="java.lang.String">
+        select p.PERM_NAME from L_PERMISSION p
+            left join L_ROLE_PERMISSION rp ON p.id = rp.PERMISSION_ID
+            left join L_ROLE r ON rp.ROLE_ID = r.id
+            left join L_USER_ROLE ur ON ur.ROLE_ID =r.id
+                where ur.USER_ID = #{id}
+    </select>
+
+    <select id="queryPermissionsDetail" resultType="com.lyx.autoperm.entity.Permission">
+        select DISTINCT p.* from L_PERMISSION p,L_ROLE_PERMISSION rp where rp.permission_id = p.id and rp.role_id
+            in
+        (select r.id from L_USER_ROLE ur,L_ROLE r where ur.role_id = r.id and ur.user_id = #{id} )
+    </select>
+</mapper>
