@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lyx.autoperm.entity.Permission;
 import com.lyx.autoperm.entity.Role;
 import com.lyx.autoperm.entity.User;
+import com.lyx.autoperm.entity.vo.MenuVO;
 import com.lyx.autoperm.exception.UserCodeEnum;
 import com.lyx.autoperm.exception.UserException;
 import com.lyx.autoperm.service.IPermissionService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -57,9 +59,34 @@ public class UserController {
         Set<String> roles = roleService.queryRolesById(id);
         // 根据角色查询所有的菜单
         Set<Permission> permissions = permissionService.queryPermissionsByRoles(id);
+        // 构建菜单树
+        List<MenuVO> menus = permissionService.buildMenus(permissions);
         return R.ok()
                 .put("user",byId)
                 .put("roles",roles)
                 .put("permissions",permissions);
+    }
+
+    /**
+     * 构建权限菜单树
+     * @param req
+     * @return com.lyx.autoperm.utils.R
+     * @author 黎勇炫
+     * @create 2022/6/21
+     * @email 1677685900@qq.com
+     */
+    @GetMapping("/createRouter")
+    public R getRouter(HttpServletRequest req){
+        // 获取用户id
+        String id = JwtUtils.getMemberIdByJwtToken(req);
+        if(StringUtils.isEmpty(id)){
+            throw new UserException(UserCodeEnum.TOKEN_NOT_FOUND);
+        }
+        // 根据角色查询所有的菜单
+        Set<Permission> permissions = permissionService.queryPermissionsByRoles(id);
+        // 构建菜单树
+        List<MenuVO> menus = permissionService.buildMenus(permissions);
+
+        return R.ok().setData(menus);
     }
 }

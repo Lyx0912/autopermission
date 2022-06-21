@@ -2,7 +2,9 @@ package com.lyx.autoperm.service;
 
 import com.lyx.autoperm.entity.Permission;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lyx.autoperm.entity.vo.MenuVO;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,4 +26,14 @@ public interface IPermissionService extends IService<Permission> {
      * @email 1677685900@qq.com
      */
     Set<Permission> queryPermissionsByRoles(String id);
+
+    /**
+     * 构建前端菜单树
+     * @param permissions
+     * @return java.util.List<com.lyx.autoperm.entity.vo.MenuVO>
+     * @author 黎勇炫
+     * @create 2022/6/20
+     * @email 1677685900@qq.com
+     */
+    List<MenuVO> buildMenus(Set<Permission> permissions);
 }

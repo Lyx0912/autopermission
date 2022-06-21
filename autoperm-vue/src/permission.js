@@ -13,23 +13,35 @@ const whiteList = ['/login'] // no redirect whitelist
 
 export function activeRouter(permissions){
   let root = []
-
+  console.log(permissions)
   permissions.forEach(perm=>{
-    let obj = {
-      path : perm.path,
-      name : perm.permName,
-      component: () => import("@/views"+perm.path),
-      meta: { title: perm.permName, icon: 'dashboard' },
-      children:[]
-    }
+    let obj =   {
+        path: perm.path,
+        component : Layout,
+        meta: { title: perm.permName, icon: perm.icon },
+      }
+      if(perm.children !== ''){
+        perm.children.forEach(chil=>{
+          obj.children = []
+          obj.children.push({
+            path: chil.path,
+            name: 'userManager',
+            component: () => import('@/views/user/manager/index'),
+            meta: { title: chil.permName, icon: chil.icon }
+          })
+        })
+      }
+
     // 如果有子菜单
-    if(perm.children.length > 0){
-      selectChildren(perm.children,obj.children);
-    }
-    root.push(obj)
+    // if(perm.children.length > 0){
+    //   selectChildren(perm.children,obj.children);
+    // }
     router.options.routes.push(obj)
     console.log(router.options.routes)
+    root.push(obj)
   })
+
+  router.addRoutes(root)
 }
 
 function selectChildren(children,arr){
@@ -72,8 +84,12 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           // get user info
-          await store.dispatch('user/getInfo').then(resp=>{
-            activeRouter(resp)
+          await store.dispatch('user/getInfo').then(()=>{
+            // 发起请求，构建路由和菜单
+            store.dispatch('permission/createRoutes').then(menus=>{
+              router.addRoutes(menus) // 动态添加可访问路由表
+              next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+            })
           })
           next()
         } catch (error) {

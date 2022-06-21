@@ -3,6 +3,8 @@ package com.lyx.autoperm.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -47,9 +49,18 @@ public class Permission implements Serializable {
        * 图标
        */
      private String icon;
+      /**
+        * 菜单类型
+        */
+     private Integer type;
+
+      /**
+        * 组件地址
+        */
+     private String component;
 
     @TableField(exist = false)
-    private Set<Permission> children;
+    private Set<Permission> children = new HashSet<>();;
 
     public Integer getId() {
         return id;
@@ -106,13 +117,23 @@ public class Permission implements Serializable {
         this.icon = icon;
     }
 
-    @Override
-    public String toString() {
-        return "Permission{" +
-            "id=" + id +
-            ", parentId=" + parentId +
-            ", premName=" + permName +
-            ", path=" + path +
-        "}";
+    public void setPermName(String permName) {
+        this.permName = permName;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getComponent() {
+        return component;
+    }
+
+    public void setComponent(String component) {
+        this.component = component;
     }
 }

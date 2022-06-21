@@ -54,9 +54,8 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-import {getInfo, login} from '@/api/user'
+import { login} from '@/api/user'
 import { setToken,getToken } from '@/utils/auth'
-import { activeRouter } from '@/permission'
 
 export default {
   name: 'Login',
@@ -113,11 +112,6 @@ export default {
           this.loading = true
           login(this.loginForm).then(Response => {
             setToken(Response.data)
-            // 根据token获取信息
-            getInfo(Response.data).then(resp=>{
-              activeRouter(resp.permissions)
-              console.log(resp="ssss")
-            })
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(Response => {

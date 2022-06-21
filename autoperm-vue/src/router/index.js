@@ -54,6 +54,17 @@ export const constantRoutes = [
       meta: { title: '主页', icon: 'dashboard' }
     }]
   },
+  // {
+  //   component: Layout,
+  //   path: '/user',
+  //   children: [{
+  //     path: '/manager',
+  //     name: 'userManager',
+  //     component: () => import('@/views/user/manager/index'),
+  //     meta: { title: '主页2', icon: 'dashboard' }
+  //   }]
+  // },
+
 
 
   // 404 page must be placed at the end !!!
@@ -61,7 +72,7 @@ export const constantRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
