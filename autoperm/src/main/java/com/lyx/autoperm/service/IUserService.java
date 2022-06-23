@@ -1,5 +1,6 @@
 package com.lyx.autoperm.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lyx.autoperm.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 

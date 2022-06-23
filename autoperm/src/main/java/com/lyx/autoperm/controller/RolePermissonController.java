@@ -4,6 +4,7 @@ package com.lyx.autoperm.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Controller;
  * @author liyongxuan
  * @since 2022-06-09
  */
-@Controller
+@RestController
 @RequestMapping("/autoperm/role-permisson")
 public class RolePermissonController {
 

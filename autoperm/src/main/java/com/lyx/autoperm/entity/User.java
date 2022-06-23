@@ -8,9 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <p>
@@ -51,9 +49,35 @@ public class User implements Serializable, UserDetails {
     private String age;
 
      /**
+       * 性别
+       */
+    private String sex;
+
+     /**
+       * 手机号
+       */
+    private String phone;
+
+     /**
+       * 家庭住址
+       */
+    private String address;
+
+     /**
        * 启用状态
        */
     private Integer enable;
+
+     /**
+       * 创建时间
+       */
+    private String createTime;
+
+     /**
+       * 角色列表
+       */
+     @TableField(exist = false)
+    private Set<String> roles = new HashSet<>();
 
     @TableField(exist = false)
     private Set<String> permissions;
@@ -102,14 +126,6 @@ public class User implements Serializable, UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
-//        Collection<GrantedAuthority> authorities = new ArrayList<>();
-//        for(String permissionValue : permissions) {
-//            if(StringUtils.isEmpty(permissionValue)) continue;
-//            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(permissionValue);
-//            authorities.add(authority);
-//        }
-//
-//        return authorities;
     }
 
     public void setPermissions(Set<String> permissions) {
@@ -155,15 +171,43 @@ public class User implements Serializable, UserDetails {
         this.enable = enable;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-            "id=" + id +
-            ", username=" + username +
-            ", password=" + password +
-            ", name=" + name +
-            ", age=" + age +
-            ", enable=" + enable +
-        "}";
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
     }
 }

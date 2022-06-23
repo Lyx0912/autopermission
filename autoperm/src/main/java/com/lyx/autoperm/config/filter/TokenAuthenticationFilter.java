@@ -16,6 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -73,10 +74,13 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
 
             Set<String> permissionValueList = (Set<String>) redisTemplate.opsForValue().get(userName);
             Collection<GrantedAuthority> authorities = new ArrayList<>();
-            for(String permissionValue : permissionValueList) {
-                if(StringUtils.isEmpty(permissionValue)) continue;
-                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(permissionValue);
-                authorities.add(authority);
+            if(!CollectionUtils.isEmpty(permissionValueList)){
+                for(String permissionValue : permissionValueList) {
+                    if(StringUtils.isEmpty(permissionValue)) continue;
+                    SimpleGrantedAuthority authority = new SimpleGrantedAuthority(permissionValue);
+                    authorities.add(authority);
+                }
+
             }
 
             if (!StringUtils.isEmpty(userName)) {
