@@ -1,10 +1,13 @@
 package com.lyx.autoperm.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,7 +18,7 @@ import java.util.Set;
  * @author liyongxuan
  * @since 2022-06-09
  */
-@TableName("L_PERMISSON")
+@TableName("L_PERMISSION")
 public class Permission implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,6 +26,7 @@ public class Permission implements Serializable {
      /**
        * 权限编号
        */
+     @TableId(type = IdType.AUTO)
     private Integer id;
 
      /**
@@ -60,7 +64,7 @@ public class Permission implements Serializable {
      private String component;
 
     @TableField(exist = false)
-    private Set<Permission> children = new HashSet<>();;
+    private List<Permission> children = new ArrayList<>();;
 
     public Integer getId() {
         return id;
@@ -93,11 +97,11 @@ public class Permission implements Serializable {
         this.path = path;
     }
 
-    public Set<Permission> getChildren() {
+    public List<Permission> getChildren() {
         return children;
     }
 
-    public void setChildren(Set<Permission> children) {
+    public void setChildren(List<Permission> children) {
         this.children = children;
     }
 

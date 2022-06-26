@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lyx.autoperm.entity.Permission;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,7 +19,6 @@ import java.util.Set;
 public interface PermissionMapper extends BaseMapper<Permission> {
 
     /**
-     * gzsass
      * @param id 用户id
      * @return java.util.Set<java.lang.String>
      * @author 黎勇炫
@@ -35,5 +35,5 @@ public interface PermissionMapper extends BaseMapper<Permission> {
      * @create 2022/6/13
      * @email 1677685900@qq.com
      */
-    Set<Permission> queryPermissionsDetail(String id);
+    List<Permission> queryPermissionsDetail(String id);
 }

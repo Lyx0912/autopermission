@@ -13,6 +13,10 @@
     <select id="queryPermissionsDetail" resultType="com.lyx.autoperm.entity.Permission">
         select DISTINCT p.* from L_PERMISSION p,L_ROLE_PERMISSION rp where rp.permission_id = p.id and rp.role_id
             in
-        (select r.id from L_USER_ROLE ur,L_ROLE r where ur.role_id = r.id and ur.user_id = #{id} )
+        (select r.id from L_USER_ROLE ur,L_ROLE r
+            <where>
+                ur.role_id = r.id
+                <if test="id != null and id !=''">and ur.user_id = #{id}</if>
+            </where>)
     </select>
 </mapper>

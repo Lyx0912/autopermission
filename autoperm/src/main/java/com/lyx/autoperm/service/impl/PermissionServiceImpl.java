@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -28,14 +25,13 @@ import java.util.stream.Collectors;
  * @since 2022-06-09
  */
 @Service
-public class PermissonServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements IPermissionService {
+public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements IPermissionService {
 
     @Autowired
     private PermissionMapper permissionMapper;
 
     /**
      * 根据用户查询所有的权限菜单详情
-     *
      * @param id
      * @return java.util.Set<com.lyx.autoperm.entity.Permission>
      * @author 黎勇炫
@@ -43,27 +39,42 @@ public class PermissonServiceImpl extends ServiceImpl<PermissionMapper, Permissi
      * @email 1677685900@qq.com
      */
     @Override
-    public Set<Permission> queryPermissionsByRoles(String id) {
+    public List<Permission> queryPermissionsByRoles(String id) {
         // 查询权限列表
-        Set<Permission> permissions = permissionMapper.queryPermissionsDetail(id);
+        List<Permission> permissions = queryPermissions(id);
         // 遍历权限列表，筛选出一级权限
-        Set<Permission> perm = permissions.stream().filter(item -> {
+        List<Permission> perm = permissions.stream().filter(item -> {
             return item.getParentId() == 0;
         }).map(l1 -> {
             l1.setChildren(findChildren(permissions, l1));
             return l1;
-        }).sorted(((o1, o2) -> {
-            return (o1.getSort() == null ? 0 : o1.getSort()) - (o2.getSort() == null ? 0 : o2.getSort());
-        })).collect(Collectors.toSet());
+        }).sorted((Comparator.comparingInt(o -> (o.getSort() == null ? 0 : o.getSort())))).collect(Collectors.toList());
 
         return perm;
     }
 
-    private Set<Permission> findChildren(Set<Permission> permissions, Permission l1) {
+    private List<Permission> queryPermissions(String id) {
+        if(StringUtils.isEmpty(id)){
+            return permissionMapper.selectList(null);
+        }else {
+            return permissionMapper.queryPermissionsDetail(id);
+        }
+    }
 
-        Set<Permission> children = permissions.stream().filter(perm -> {
+    /**
+     *
+     * @param permissions 权限列表
+     * @param l1 父权限
+     * @return java.util.List<com.lyx.autoperm.entity.Permission>
+     * @author 黎勇炫
+     * @create 2022/6/25
+     * @email 1677685900@qq.com
+     */
+    private List<Permission> findChildren(List<Permission> permissions, Permission l1) {
+
+        List<Permission> children = permissions.stream().filter(perm -> {
             return perm.getParentId().toString().equals(l1.getId().toString());
-        }).collect(Collectors.toSet());
+        }).sorted((Comparator.comparingInt(o -> (o.getSort() == null ? 0 : o.getSort())))).collect(Collectors.toList());
 
         return children;
     }
@@ -78,7 +89,7 @@ public class PermissonServiceImpl extends ServiceImpl<PermissionMapper, Permissi
      * @email 1677685900@qq.com
      */
     @Override
-    public List<MenuVO> buildMenus(Set<Permission> permissions) {
+    public List<MenuVO> buildMenus(List<Permission> permissions) {
         List<MenuVO> menus = new LinkedList<MenuVO>();
         // 遍历权限列表，构建菜单
         for (Permission item : permissions) {
@@ -87,7 +98,7 @@ public class PermissonServiceImpl extends ServiceImpl<PermissionMapper, Permissi
             menu.setPath(item.getPath());
             menu.setComponent(buildComponent(item));item.getType().toString().equals(MenuType.MENU.getCode().toString());
             menu.setMeta(new MetaVO(item.getPermName(), item.getIcon()));
-            Set<Permission> cMenus = item.getChildren();
+            List<Permission> cMenus = item.getChildren();
             // 如果有子菜单
             if (!CollectionUtils.isEmpty(cMenus) && cMenus.size() > 0 )
             {
@@ -95,7 +106,7 @@ public class PermissonServiceImpl extends ServiceImpl<PermissionMapper, Permissi
                 menu.setRedirect("noRedirect");
                 menu.setChildren(buildMenus(cMenus));
             }
-            else if (item.getType().toString().equals(MenuType.MENU.getCode().toString()) && item.getParentId().equals(0))
+            else if (item.getParentId().equals(0))
             {
                 menu.setMeta(null);
                 List<MenuVO> childrenList = new ArrayList<MenuVO>();

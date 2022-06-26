@@ -66,7 +66,7 @@
         <template slot-scope="scope">
           <el-button class="button-new-tag" size="small" @click="showInput(scope.row.id)">+ 角色</el-button>
           <el-button @click="handleClick(scope.row)" type="primary" size="small">编辑</el-button>
-          <el-button type="danger" size="small">删除</el-button>
+          <el-button type="danger" size="small" @click="remove(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -113,7 +113,7 @@
 <script>
 
 import {mapGetters} from "vuex";
-import {list, removeRole} from "@/api/user";
+import {list, removeRole,rm} from "@/api/user";
 import { allRole,add } from "@/api/role"
 
 export default {
@@ -188,6 +188,26 @@ export default {
           this.getList(this.queryParams.pageNum)
         }
       })
+    },
+    // 删除用户
+    remove(uid){
+      const ids = uid || this.ids;
+      this.$confirm('是否确认删除用户编号为"' + ids + '"的数据项?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function () {
+        return rm(ids);
+      }).then(() => {
+        this.getList(this.queryParams.pageNum);
+        this.$message.success("删除成功");
+      }).catch(() => {
+      });
+      // rm(ids).then(Response=>{
+      //   if(Response.code == 0){
+      //     this.$message.success("删除成功")
+      //   }
+      // })
     }
   }
 }

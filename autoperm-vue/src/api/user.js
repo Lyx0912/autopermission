@@ -37,6 +37,14 @@ export function update(user){
   })
 }
 
+// 删除用户
+export function rm(ids) {
+  return request({
+    url: '/autoperm/user/remove/'+ids,
+    method: 'delete',
+  })
+}
+
 export function getInfo(token) {
   return request({
     url: '/autoperm/user/info',

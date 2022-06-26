@@ -25,7 +25,7 @@ public interface IPermissionService extends IService<Permission> {
      * @create 2022/6/13
      * @email 1677685900@qq.com
      */
-    Set<Permission> queryPermissionsByRoles(String id);
+    List<Permission> queryPermissionsByRoles(String id);
 
     /**
      * 构建前端菜单树
@@ -35,5 +35,5 @@ public interface IPermissionService extends IService<Permission> {
      * @create 2022/6/20
      * @email 1677685900@qq.com
      */
-    List<MenuVO> buildMenus(Set<Permission> permissions);
+    List<MenuVO> buildMenus(List<Permission> permissions);
 }

@@ -69,7 +69,7 @@ public class UserController {
         // 根据用户id获取用户的角色列表
         Set<String> roles = roleService.queryRolesById(id);
         // 根据角色查询所有的菜单
-        Set<Permission> permissions = permissionService.queryPermissionsByRoles(id);
+        List<Permission> permissions = permissionService.queryPermissionsByRoles(id);
         // 构建菜单树
         List<MenuVO> menus = permissionService.buildMenus(permissions);
         return R.ok()
@@ -101,6 +101,15 @@ public class UserController {
         return R.ok().setData(res);
     }
 
+    /**
+     *
+     * @param id 用户id
+     * @param role 角色名称
+     * @return com.lyx.autoperm.utils.R
+     * @author 黎勇炫
+     * @create 2022/6/24
+     * @email 1677685900@qq.com
+     */
     @DeleteMapping("/removeRole")
     public R removeRole(@RequestParam String id,@RequestParam String role){
         // 获取角色id
@@ -118,9 +127,9 @@ public class UserController {
      * @create 2022/6/22
      * @email 1677685900@qq.com
      */
-    @DeleteMapping("/remove")
-    public R remove(String[] ids){
-        userRoleService.removeBatchByIds(Arrays.asList(ids));
+    @DeleteMapping("/remove/{ids}")
+    public R remove(@PathVariable String[] ids){
+        userService.removeBatchByIds(Arrays.asList(ids));
         return R.ok();
     }
 

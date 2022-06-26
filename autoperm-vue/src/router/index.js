@@ -54,19 +54,6 @@ export const constantRoutes = [
       meta: { title: '主页', icon: 'dashboard' }
     }]
   },
-  // {
-  //   component: Layout,
-  //   path: '/user',
-  //   children: [{
-  //     path: '/manager',
-  //     name: 'userManager',
-  //     component: () => import('@/views/user/manager/index'),
-  //     meta: { title: '主页2', icon: 'dashboard' }
-  //   }]
-  // },
-
-
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
