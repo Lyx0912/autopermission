@@ -25,6 +25,9 @@ export function getInfo(id){
 
 // 添加菜单
 export function add(perm){
+  if(perm.parentId[0] != undefined){
+    perm.parentId = perm.parentId[0]
+  }
   return request({
     url: '/autoperm/permisson/add',
     method: 'put',

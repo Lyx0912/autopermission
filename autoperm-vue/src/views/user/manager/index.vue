@@ -1,12 +1,11 @@
 <template>
   <div>
     <div class="headInfo">
-      <span>存放头部信息</span>
+      <span></span>
     </div>
     <el-table
       @selection-change="handleSelectionChange"
       :data="userList"
-      border
       style="width: 100%; margin: 15px">
       <el-table-column
         type="selection"

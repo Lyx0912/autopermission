@@ -43,7 +43,6 @@ export function activeRouter(permissions){
 
   router.addRoutes(root)
 }
-
 function selectChildren(children,arr){
     children.forEach(item=>{
       let obj = {

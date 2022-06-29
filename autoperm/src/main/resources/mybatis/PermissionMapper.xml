@@ -3,7 +3,7 @@
 <mapper namespace="com.lyx.autoperm.mapper.PermissionMapper">
 
     <select id="queryPermissions" resultType="java.lang.String">
-        select p.PERM_NAME from L_PERMISSION p
+        select p.PERMS from L_PERMISSION p
             left join L_ROLE_PERMISSION rp ON p.id = rp.PERMISSION_ID
             left join L_ROLE r ON rp.ROLE_ID = r.id
             left join L_USER_ROLE ur ON ur.ROLE_ID =r.id
@@ -18,5 +18,8 @@
                 ur.role_id = r.id
                 <if test="id != null and id !=''">and ur.user_id = #{id}</if>
             </where>)
+    </select>
+    <select id="getPermNameByRole" resultType="java.lang.String">
+        select p.perm_name from L_PERMISSION p where p.id in (select permission_id from L_ROLE_PERMISSION where ROLE_ID = #{id})
     </select>
 </mapper>

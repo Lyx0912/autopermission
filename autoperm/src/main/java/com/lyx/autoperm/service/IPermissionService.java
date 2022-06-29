@@ -36,4 +36,14 @@ public interface IPermissionService extends IService<Permission> {
      * @email 1677685900@qq.com
      */
     List<MenuVO> buildMenus(List<Permission> permissions);
+
+    /**
+     * 根据会员编号查询
+     * @param id 角色编号
+     * @return java.util.List<java.lang.String>
+     * @author 黎勇炫
+     * @create 2022/6/28
+     * @email 1677685900@qq.com
+     */
+    List<String> getPermNameByRole(Integer id);
 }

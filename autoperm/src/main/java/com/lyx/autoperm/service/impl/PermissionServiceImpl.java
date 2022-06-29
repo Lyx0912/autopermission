@@ -10,6 +10,8 @@ import com.lyx.autoperm.mapper.PermissionMapper;
 import com.lyx.autoperm.service.IPermissionService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -24,11 +26,13 @@ import java.util.stream.Collectors;
  * @author liyongxuan
  * @since 2022-06-09
  */
-@Service
+@Service("permissionServiceImpl")
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements IPermissionService {
 
     @Autowired
     private PermissionMapper permissionMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 根据用户查询所有的权限菜单详情
@@ -125,6 +129,20 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         return menus;
     }
 
+    /**
+     * 根据会员编号查询
+     *
+     * @param id 角色编号
+     * @return java.util.List<java.lang.String>
+     * @author 黎勇炫
+     * @create 2022/6/28
+     * @email 1677685900@qq.com
+     */
+    @Override
+    public List<String> getPermNameByRole(Integer id) {
+        return permissionMapper.getPermNameByRole(id);
+    }
+
 
     /**
      * 构建前端组件component
@@ -140,6 +158,26 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             component =  permission.getComponent();
         }
         return component;
+    }
+
+    /**
+     * 核对当前用户是否具有某一权限
+     * @param permission 权限标识
+     * @return boolean
+     * @author 黎勇炫
+     * @create 2022/6/28
+     * @email 1677685900@qq.com
+     */
+    public boolean hasPerms(String permission){
+        if(StringUtils.isEmpty(permission)){
+            return false;
+        }
+        Set<String> perms = (Set<String>) redisTemplate.opsForValue().get(SecurityContextHolder.getContext().getAuthentication().getName());
+        if(CollectionUtils.isEmpty(perms)){
+            return false;
+        }
+
+        return perms.contains(permission);
     }
 
 }

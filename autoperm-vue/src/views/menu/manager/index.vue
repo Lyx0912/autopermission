@@ -1,14 +1,13 @@
 <template>
   <div>
     <div class="headInfo">
-      <span>存放头部信息</span>
+      <span></span>
     </div>
     <el-table
       @selection-change="handleSelectionChange"
       :data="permList"
       style="width: 100%;margin: 15px;"
       row-key="id"
-      border
       default-expand-all
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
       <el-table-column
@@ -85,7 +84,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24" >
-            <el-form-item label="菜单名称">
+            <el-form-item label="菜单名称" prop="permName">
               <el-input v-model="permission.permName"></el-input>
             </el-form-item>
           </el-col>
@@ -116,14 +115,21 @@
               <el-input v-model="permission.path"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="24" >
+          <el-col :span="24" v-if="permission.type == 1">
+            <el-form-item label="组件路径">
+              <el-input v-model="permission.component"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" >
             <el-form-item label="权限标识">
               <el-input v-model="permission.perms"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="24" v-if="permission.type == 1">
-            <el-form-item label="组件路径">
-              <el-input v-model="permission.component"></el-input>
+          <el-col :span="12" >
+            <el-form-item label="排序">
+              <template>
+                <el-input-number v-model="permission.sort" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number>
+              </template>
             </el-form-item>
           </el-col>
         </el-row>
@@ -162,7 +168,9 @@ export default {
       // 权限列表
       permList:[],
       permission:{},
-      rules:[],
+      rules:{
+        permName : {required: true, message: '请输入菜单名称', trigger: 'blur'},
+      },
     }
   },
   created() {

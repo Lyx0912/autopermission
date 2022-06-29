@@ -37,7 +37,6 @@ const actions= {
       return new Promise(resolve => {
         // 向后端请求路由数据
         getRouters().then(res => {
-          console.log(res)
           const sdata = JSON.parse(JSON.stringify(res.data))
           const rdata = JSON.parse(JSON.stringify(res.data))
           const sidebarRoutes = filterAsyncRouter(sdata)

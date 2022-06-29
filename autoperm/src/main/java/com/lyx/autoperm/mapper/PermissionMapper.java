@@ -36,4 +36,14 @@ public interface PermissionMapper extends BaseMapper<Permission> {
      * @email 1677685900@qq.com
      */
     List<Permission> queryPermissionsDetail(String id);
+
+    /**
+     * 根据角色查询权限
+     * @param id 角色编号
+     * @return java.util.List<java.lang.String>
+     * @author 黎勇炫
+     * @create 2022/6/28
+     * @email 1677685900@qq.com
+     */
+    List<String> getPermNameByRole(Integer id);
 }
