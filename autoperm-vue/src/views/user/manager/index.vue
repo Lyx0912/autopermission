@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="headInfo">
-      <span></span>
-    </div>
     <el-table
       @selection-change="handleSelectionChange"
       :data="userList"

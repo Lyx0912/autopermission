@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="headInfo">
-      <span></span>
-    </div>
     <el-table
       :data="roleList"
       style="width: 100%; margin: 15px">

@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 @Service("permissionServiceImpl")
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements IPermissionService {
 
+
     @Autowired
     private PermissionMapper permissionMapper;
     @Autowired
@@ -169,14 +170,16 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
      * @email 1677685900@qq.com
      */
     public boolean hasPerms(String permission){
+        // 如果权限标识为空返回false
         if(StringUtils.isEmpty(permission)){
             return false;
         }
+        // 从redis中获取当前登录用户的权限列表
         Set<String> perms = (Set<String>) redisTemplate.opsForValue().get(SecurityContextHolder.getContext().getAuthentication().getName());
+        // 权限列表为空返回null
         if(CollectionUtils.isEmpty(perms)){
             return false;
         }
-
         return perms.contains(permission);
     }
 
